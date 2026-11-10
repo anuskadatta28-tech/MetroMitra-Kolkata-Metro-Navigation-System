@@ -1,86 +1,133 @@
 # MetroMitra – Kolkata Metro Navigation System
 
-## 1. About the Project
-MetroMitra is a C++-based metro navigation system designed for the Kolkata Metro network. It helps users find the fastest route between two metro stations by considering travel time.
+**MetroMitra** is a C++-based metro navigation system designed to help users find the fastest route between two metro stations in the Kolkata Metro network.
+The project uses graph data structures and Dijkstra's Shortest Path Algorithm to calculate the minimum-time route. It also provides the station sequence, metro lines, interchange information, estimated journey time, distance and ticket fare.
 
-The system provides the station sequence, metro lines, interchange stations, estimated journey time, total distance, and estimated ticket fare.
+## Project Objectives
+- Find the fastest route between two metro stations.
+- Display the complete sequence of stations.
+- Identify metro lines and interchange stations.
+- Calculate estimated journey time and distance.
+- Calculate an estimated ticket fare.
+- Store metro network data separately using CSV files.
 
-## 2. Objectives
-- To find the fastest route between two metro stations.
-- To display the complete station-by-station route.
-- To identify metro lines and interchange stations.
-- To calculate estimated journey time and distance.
-- To calculate an estimated ticket fare.
-- To store metro data separately using CSV files.
+## Key Features
+- **Fastest Route:** Finds the route with minimum travel time.
+- **Station Search:** Accepts source and destination station names.
+- **Route Display:** Shows the sequence of stations from source to destination.
+- **Interchange Detection:** Identifies when passengers need to change metro lines.
+- **Journey Details:** Displays total distance and estimated travel time.
+- **Fare Estimation:** Calculates an estimated ticket fare.
+- **Input Validation:** Handles invalid station names and identical source and destination.
+- **CSV Data Management:** Reads station and metro network information from external files.
 
-## 3. Key Features
-- Source and destination station selection.
-- Fastest route calculation.
-- Complete station sequence.
-- Metro line information.
-- Interchange station identification.
-- Estimated travel time and distance.
-- Estimated ticket fare.
+## Data Structures and Algorithms Used
 
-## 4. Technologies Used
-- Programming Language: C++
-- Concepts: Object-Oriented Programming (OOP)
-- Data Structures: Graph, Adjacency List, Vector
-- Algorithm: Dijkstra's Shortest Path Algorithm
-- STL: Priority Queue, Vector, Unordered Map
-- File Handling: CSV File Reading
-
-## 5. Data Structures and Algorithms
-
-| Concept | Purpose |
+| Concept | Application |
 |---|---|
-| Graph | Represents metro stations and connections |
-| Adjacency List | Stores connected stations |
-| Dijkstra's Algorithm | Finds the route with minimum travel time |
-| Priority Queue | Efficiently selects the station with minimum travel time |
-| Vector | Stores station and route information |
-| Unordered Map | Maps station IDs to station details |
-| OOP | Organizes the project into classes and objects |
+| Graph | Represents the metro network |
+| Adjacency List | Stores connections between stations |
+| Weighted Edges | Stores distance and travel time |
+| Dijkstra's Algorithm | Finds the fastest route |
+| Priority Queue | Selects the node with minimum travel time |
+| Vector | Stores stations, graph nodes and paths |
+| Structures | Represents stations, lines, connections and edges |
+| OOP | Implements the Graph class |
+| File Handling | Reads CSV datasets |
 
-## 6. Dataset Structure
+## Technology Stack
+- **Programming Language:** C++
+- **Compiler:** GCC (g++)
+- **IDE:** Visual Studio Code
+- **Data Storage:** CSV files
+- **Version Control:** GitHub
 
+## Project Structure
+
+```text
+MetroMitra-Kolkata-Metro-Navigation-System/
+│
+├── dataset/
+│   ├── stations.csv
+│   ├── lines.csv
+│   ├── connections.csv
+│   └── interchanges.csv
+│
+├── src/
+│   └── main.cpp
+│
+├── .gitignore
+└── README.md
+```
+
+## Dataset Description
 The project uses separate CSV files to store metro network information.
 
-**Dataset files:**
+| File | Description |
+|---|---|
+| stations.csv | Station IDs and station names |
+| lines.csv | Metro line IDs, names and colours |
+| connections.csv | Connected stations, line IDs, distances and travel times |
+| interchanges.csv | Interchange stations and transfer times |
 
-- `stations.csv` – Stores station IDs and station names.
-- `lines.csv` – Stores metro line IDs, names, and colours.
-- `connections.csv` – Stores connected stations, line IDs, distances, and travel times.
-- `interchanges.csv` – Stores interchange stations, connecting lines, and transfer times.
+The current dataset contains:
+- 55 station records
+- 5 metro lines
+- 52 connection records
+- 4 directional interchange records
+- 57 station-line graph nodes
 
-## 7. Routing Algorithm
+## Routing Methodology
+MetroMitra uses a **weighted graph** to represent the metro network.
+Each graph node represents a station-line combination. This allows the system to distinguish between different metro lines at an interchange station.
 
-MetroMitra uses Dijkstra's Shortest Path Algorithm to find the fastest route.
+The routing process follows these steps:
+1. Read metro information from CSV files.
+2. Create graph nodes for station-line combinations.
+3. Build the adjacency list using metro connections.
+4. Add directed edges for interchange transitions.
+5. Apply Dijkstra's algorithm using travel time as the edge weight.
+6. Reconstruct and display the fastest route.
+7. Calculate the total distance, journey time and estimated fare.
 
-- Each metro station and connection is represented using a weighted graph.
-- Travel time is used as the edge weight.
-- A priority queue helps select the station with the minimum accumulated travel time.
-- Interchange time is also considered while calculating the route.
+## Fare Calculation
+The project uses a simulated fare calculation rule:
+      **Fare = ceil(Total Distance / 2) × ₹5**
+      
+The fare is rounded up to the next 2 km interval.
+*Note: This is an academic simulation and does not represent the official Kolkata Metro fare structure.*
 
-The route with the minimum total travel time is selected.
+## How to Run the Project
+### Prerequisites
+- GCC C++ compiler installed.
+- Visual Studio Code or any C++ IDE.
 
-## 8. Fare Calculation
+### Compilation
+Open the terminal in the project root directory and execute:
+```bash
+g++ src/main.cpp -o MetroMitra
+```
+### Execution
+On Windows PowerShell:
+```powershell
+.\MetroMitra.exe
+```
+Enter the source and destination station names when prompted.
 
-The project uses a simulated fare calculation model:
+## Dataset Limitations
+- The current dataset contains estimated travel times, distances and transfer times. 
+- Some metro sections are not yet connected to the main network in the dataset.
+- Therefore, route availability and calculated values are dependent on the available CSV records.
+- The project is an academic navigation simulation, not an official real-time metro service.
 
-**Fare = ceil(Total Distance / 2) × ₹5**
+## Future Scope
+- Develop a graphical user interface using HTML, CSS and JavaScript.
+- Add an interactive metro network map.
+- Expand and verify the metro dataset.
+- Add alternative route suggestions.
+- Include real-time metro information if a reliable data source becomes available.
 
-The fare is calculated based on the total distance travelled, rounded up to the next 2 km interval.
-
-*Note: This is an academic fare model and does not represent the official Kolkata Metro fare structure.*
-
-## 9. Dataset Disclaimer
-
-The project uses a structured dataset of Kolkata Metro stations, lines, connections, and interchanges.
-
-Some distance, travel-time, and transfer-time values are approximate or simulated for academic implementation. They should not be treated as official real-time metro data.
-
-## 10. Team Members
+## Team Members
 
 | Name | UID |
 |---|---|
@@ -88,19 +135,10 @@ Some distance, travel-time, and transfer-time values are approximate or simulate
 | Bhavya Sharma | 25BCS12027 |
 | Kanika Saini | 25BCS12309 |
 
-## 11. Project Status
+## Project Information
+- Project Name: MetroMitra – Kolkata Metro Navigation System
+- Domain: Data Structures and Algorithms (ADSA)
+- Language: C++
+- Repository: 
 
-- [x] GitHub repository created
-- [x] Dataset CSV files prepared
-- [ ] CSV file handling in C++
-- [ ] Graph construction
-- [ ] Dijkstra's algorithm implementation
-- [ ] Route and fare calculation
-- [ ] User interface
-
-## 12. Future Scope
-- Interactive graphical user interface.
-- Real-time metro updates.
-- Live train arrival information.
-- More accurate official fare integration.
-- Route suggestions based on different user preferences.
+Developed as an academic project to apply graph algorithms, data structures, OOP concepts and file handling in a practical navigation system.
