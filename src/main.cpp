@@ -38,7 +38,8 @@ int main() {
     file.close();
 
     // Display all stations
-    cout << "===== METROMITRA =====" << endl;
+    cout << endl;
+    cout << "===== MetroMitra =====" << endl;
     cout << "Available Metro Stations:" << endl << endl;
 
     for (const Station& s : stations) {
