@@ -1,0 +1,5 @@
+station_id,from_line_id,to_line_id,transfer_time_min
+S003,L1,L4,5
+S003,L4,L1,5
+S012,L1,L2,5
+S012,L2,L1,5
