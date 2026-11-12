@@ -7,6 +7,7 @@
 #include <limits>
 #include <algorithm>
 #include <cmath>
+#include <tuple>
 using namespace std;
 
 // Structure to store station information
@@ -44,6 +45,7 @@ struct Edge {
     int destination;
     double distance_km;
     int travel_time_min;
+    bool isInterchange;
 };
 
 // Structure to represent a station on a particular metro line
@@ -66,14 +68,16 @@ public:
 
     // Function to add an edge between two nodes
     void addEdge(int source, int destination,
-                double distance, int travelTime) {
-        adjList[source].push_back({
-            destination, distance, travelTime
-        });
-        adjList[destination].push_back({
-            source, distance, travelTime
-        });
-    }
+             double distance, int travelTime) {
+
+    adjList[source].push_back({
+        destination, distance, travelTime, false
+    });
+
+    adjList[destination].push_back({
+        source, distance, travelTime, false
+    });
+}
 
     // Function to find the index of a station-line node
     int getNodeIndex(string stationID, string lineID) {
@@ -90,12 +94,12 @@ public:
 
     // Function to add a directed interchange edge
     void addDirectedEdge(int source, int destination,
-                        int transferTime) {
+                     int transferTime) {
 
-        adjList[source].push_back({
-            destination, 0.0, transferTime
-        });
-    }
+    adjList[source].push_back({
+        destination, 0.0, transferTime, true
+    });
+}
 
     // Dijkstra's Algorithm - Find fastest route
     vector<int> shortestPath(string sourceID, string destinationID) {
@@ -154,6 +158,96 @@ public:
         reverse(path.begin(), path.end());
         return path;
     }
+    // Find a route with the fewest interchanges.
+// If two routes have the same number of interchanges,
+// choose the one with minimum travel time.
+
+vector<int> fewestTransfersPath(string sourceID,
+                                string destinationID) {
+
+    int n = nodes.size();
+    const int INF = numeric_limits<int>::max();
+
+    vector<pair<int, int>> best(n, {INF, INF});
+    vector<int> parent(n, -1);
+
+    using State = tuple<int, int, int>;
+
+    priority_queue<
+        State,
+        vector<State>,
+        greater<State>
+    > pq;
+
+    // Start from every line-node representing the source station.
+    for (int i = 0; i < n; i++) {
+
+        if (nodes[i].station_id == sourceID) {
+
+            best[i] = {0, 0};
+            pq.push({0, 0, i});
+        }
+    }
+
+    int destinationNode = -1;
+
+    while (!pq.empty()) {
+
+        auto [transfers, time, current] = pq.top();
+        pq.pop();
+
+        if (make_pair(transfers, time) != best[current]) {
+            continue;
+        }
+
+        if (nodes[current].station_id == destinationID) {
+            destinationNode = current;
+            break;
+        }
+
+        for (const Edge& edge : adjList[current]) {
+
+            int newTransfers =
+                transfers + (edge.isInterchange ? 1 : 0);
+
+            int newTime = time + edge.travel_time_min;
+
+            pair<int, int> candidate = {
+                newTransfers, newTime
+            };
+
+            if (candidate < best[edge.destination]) {
+
+                best[edge.destination] = candidate;
+
+                parent[edge.destination] = current;
+
+                pq.push({
+                    newTransfers,
+                    newTime,
+                    edge.destination
+                });
+            }
+        }
+    }
+
+    if (destinationNode == -1) {
+        return {};
+    }
+
+    vector<int> path;
+
+    for (int node = destinationNode;
+         node != -1;
+         node = parent[node]) {
+
+        path.push_back(node);
+    }
+
+    reverse(path.begin(), path.end());
+
+    return path;
+}
 };
 
 int main() {
@@ -440,6 +534,78 @@ int main() {
                     currentLine = currentNode.line_id;
                 }
             }
+            // Display an additional route that minimizes line changes.
+
+vector<int> fewestPath =
+    metroGraph.fewestTransfersPath(sourceID, destinationID);
+
+if (!fewestPath.empty()) {
+
+    int fewestTransferCount = 0;
+    int fewestRouteTime = 0;
+    double fewestRouteDistance = 0.0;
+
+    cout << "\n===== FEWEST-INTERCHANGE ROUTE =====" << endl;
+
+    string previousStationID = "";
+
+    for (int i = 0; i < fewestPath.size(); i++) {
+
+        const Node& current = metroGraph.nodes[fewestPath[i]];
+
+        // Print an interchange station only once.
+        if (current.station_id != previousStationID) {
+
+            for (const Station& station : stations) {
+
+                if (station.station_id == current.station_id) {
+
+                    if (previousStationID != "")
+                        cout << " -> ";
+
+                    cout << station.station_name;
+                    break;
+                }
+            }
+
+            previousStationID = current.station_id;
+        }
+
+        if (i > 0) {
+
+            int previousNode = fewestPath[i - 1];
+
+            const Node& previous =
+                metroGraph.nodes[previousNode];
+
+            for (const Edge& edge :
+                 metroGraph.adjList[previousNode]) {
+
+                if (edge.destination == fewestPath[i]) {
+
+                    fewestRouteTime += edge.travel_time_min;
+
+                    fewestRouteDistance += edge.distance_km;
+
+                    if (edge.isInterchange) {
+                        fewestTransferCount++;
+                    }
+
+                    break;
+                }
+            }
+        }
+    }
+
+    cout << "\nInterchanges: "
+         << fewestTransferCount << endl;
+
+    cout << "Travel Time: "
+         << fewestRouteTime << " minutes" << endl;
+
+    cout << "Distance: "
+         << fewestRouteDistance << " km" << endl;
+}
         }
     }
 
