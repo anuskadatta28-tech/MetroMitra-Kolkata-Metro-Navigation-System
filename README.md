@@ -2,7 +2,9 @@
 
 **MetroMitra** is a C++-based metro navigation system designed to help users find the fastest route between two metro stations in the Kolkata Metro network.
 The project uses graph data structures and Dijkstra's Shortest Path Algorithm to calculate the minimum-time route. It also provides the station sequence, metro lines, interchange information, estimated journey time, distance and ticket fare.
-Website link : metro-mitra.netlify.app
+
+🌐 Live Website
+https://metro-mitra.netlify.app/
 
 ## Project Objectives
 - Find the fastest route between two metro stations.
