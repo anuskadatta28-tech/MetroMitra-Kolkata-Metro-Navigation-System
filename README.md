@@ -112,6 +112,11 @@ On Windows PowerShell:
 ```powershell
 .\MetroMitra.exe
 ```
+
+### To run web interface
+```
+Run web/index.html in chrome
+```
 Enter the source and destination station names when prompted.
 
 ## Dataset Limitations
