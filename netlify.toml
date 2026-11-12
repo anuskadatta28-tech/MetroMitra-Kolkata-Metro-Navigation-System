@@ -1,2 +1,3 @@
 [build]
+	command = "mkdir -p web/dataset && cp dataset/*.csv web/dataset/"
 	publish = "web"
