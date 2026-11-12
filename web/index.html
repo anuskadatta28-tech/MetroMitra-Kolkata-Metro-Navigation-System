@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f5f7fb">
+    <meta name="description" content="Plan a faster journey across the Kolkata Metro with MetroMitra.">
+    <title>MetroMitra — Kolkata Metro planner</title>
+    <link rel="stylesheet" href="./styles.css">
+    <script src="./app.js" defer></script>
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="./" aria-label="MetroMitra home">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 32 32" fill="none">
+            <path d="M7 25V11.5a9 9 0 0 1 18 0V25M11 25v-8h10v8M4 25h24M11 11h.01M21 11h.01" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+        <span class="brand-name">metro<span>mitra</span></span>
+      </a>
+      <div class="topbar-note"><span class="live-dot"></span> Kolkata Metro guide</div>
+    </header>
+
+    <main>
+      <section class="intro">
+        <p class="eyebrow">YOUR CITY, CONNECTED</p>
+        <h1>Every journey,<br><span>made a little easier.</span></h1>
+        <p class="intro-copy">Find the fastest way across Kolkata. Pick your stations and we’ll take it from here.</p>
+      </section>
+
+      <section class="planner-card" aria-labelledby="planner-title">
+        <div class="card-heading">
+          <div>
+            <p class="eyebrow">JOURNEY PLANNER</p>
+            <h2 id="planner-title">Where are you headed?</h2>
+          </div>
+          <span class="heading-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M5 19V8a7 7 0 0 1 14 0v11M8 19v-5h8v5M3 19h18M9 8h.01M15 8h.01" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+        </div>
+
+        <form id="journey-form" autocomplete="off">
+          <datalist id="station-options"></datalist>
+          <div class="station-fields">
+            <label class="station-field" for="origin">
+              <span class="field-label"><span class="station-marker origin-marker"></span>FROM</span>
+              <input id="origin" name="origin" list="station-options" placeholder="Choose a starting station" required>
+            </label>
+            <button class="swap-button" id="swap-button" type="button" aria-label="Swap starting point and destination" title="Swap stations">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M7 4v16m0 0-4-4m4 4 4-4M17 20V4m0 0-4 4m4-4 4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+            <label class="station-field" for="destination">
+              <span class="field-label"><span class="station-marker destination-marker"></span>TO</span>
+              <input id="destination" name="destination" list="station-options" placeholder="Choose your destination" required>
+            </label>
+          </div>
+          <p class="form-message" id="form-message" role="status" aria-live="polite"></p>
+          <button class="plan-button" id="plan-button" type="submit">
+            <span>Find my route</span>
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M5 12h14m-6-6 6 6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </form>
+
+        <div class="quick-picks">
+          <span>Popular:</span>
+          <button type="button" data-origin="Dakshineswar" data-destination="Esplanade">Dakshineswar → Esplanade</button>
+          <button type="button" data-origin="Howrah Maidan" data-destination="Salt Lake Sector V">Howrah → Sector V</button>
+        </div>
+      </section>
+
+      <section class="result-card" id="result-card" aria-live="polite" hidden></section>
+
+      <section class="network-section" aria-labelledby="network-title">
+        <div class="network-heading">
+          <div>
+            <p class="eyebrow">AT A GLANCE</p>
+            <h2 id="network-title">The network</h2>
+          </div>
+          <span class="network-caption">A little city, a lot of places.</span>
+        </div>
+        <div class="network-stats" id="network-stats">
+          <div class="stat"><span class="stat-value" id="station-count">—</span><span class="stat-label">stations</span></div>
+          <div class="stat"><span class="stat-value" id="line-count">—</span><span class="stat-label">metro lines</span></div>
+          <div class="stat"><span class="stat-value" id="connection-count">—</span><span class="stat-label">connections</span></div>
+        </div>
+        <div class="line-list" id="line-list" aria-label="Metro lines"></div>
+        <p class="data-note">Travel times and fares are estimates based on this project’s dataset, not live service information.</p>
+      </section>
+
+      <footer>
+        <span class="footer-brand">metro<span>mitra</span></span>
+        <span>Made for Kolkata, with care.</span>
+      </footer>
+    </main>
+  </body>
+</html>
